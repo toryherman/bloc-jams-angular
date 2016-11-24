@@ -15,10 +15,7 @@
         <div class="control-group currently-playing">
             <h2 class="song-name" ng-show="playerBar.songPlayer.currentSong.playing">{{ playerBar.songPlayer.currentSong.title }}</h2>
             <div class="seek-control">
-                <div class="seek-bar">
-                    <div class="fill"></div>
-                    <div class="thumb"></div>
-                </div>
+                <seek-bar></seek-bar>
                 <div class="current-time"></div>
                 <div class="total-time" ng-show="playerBar.songPlayer.currentSong.playing">{{ playerBar.songPlayer.currentSong.duration }}</div>
             </div>
@@ -27,10 +24,7 @@
         </div>
         <div class="control-group volume">
             <span class="ion-volume-high icon"></span>
-            <div class="seek-bar">
-                <div class="fill"></div>
-                <div class="thumb"></div>
-            </div>
+            <seek-bar></seek-bar>
         </div>
     </div>
 </section>
