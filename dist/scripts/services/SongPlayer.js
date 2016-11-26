@@ -42,6 +42,7 @@
 			});
             
             SongPlayer.currentSong = song;
+			SongPlayer.setVolume(SongPlayer.volume);
         };
         
         /**
@@ -89,6 +90,12 @@
 		* @type {Number}
 		*/
 		SongPlayer.currentTime = null;
+		
+		/**
+		* @desc Volume
+		* @type {Number}
+		*/
+		SongPlayer.volume = 80;
         
         /** PUBLIC FUNCTIONS **/
         
@@ -160,9 +167,21 @@
 		SongPlayer.setCurrentTime = function(time) {
 			if (currentBuzzObject) {
 				currentBuzzObject.setTime(time);
-			}	
+			}
 		};
         
+		/**
+		* @function setVolume
+		* @desc Set the volume
+		* @param {Number} value
+		*/
+		SongPlayer.setVolume = function(value) {
+			if (currentBuzzObject) {
+				currentBuzzObject.setVolume(value);
+				SongPlayer.volume = value;
+			}
+		};
+		
         return SongPlayer;
     }
     
