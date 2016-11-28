@@ -93,6 +93,25 @@
 	top: 0.5rem;
 }
 
+.seek-control .ion-shuffle {
+	position: absolute;
+	left: 0;
+	top: -1.25rem;
+	opacity: 0.5;
+}
+
+.seek-control .ion-loop {
+	position: absolute;
+	right: 0;
+	top: -1.25rem;
+	opacity: 0.5;
+}
+
+.seek-control .ion-shuffle.active, 
+.seek-control .ion-loop.active {
+	opacity: 1;
+}
+
 .seek-bar {
 	height: 0.25rem;
 	background-color: rgba(255,255,255,0.3);

@@ -10,6 +10,8 @@
         * @type {Object}
         */
         var currentAlbum = Fixtures.getAlbum();
+		
+		var randomAlbumOrder = [];
         
         /**
         * @desc Buzz object audio file
@@ -38,6 +40,10 @@
 			currentBuzzObject.bind('timeupdate', function() {
 				$rootScope.$apply(function() {
 					SongPlayer.currentTime = currentBuzzObject.getTime();
+					
+					if (SongPlayer.currentTime === SongPlayer.currentSong.duration) {
+						SongPlayer.next();
+					}
 				});
 			});
             
@@ -76,7 +82,7 @@
             return currentAlbum.songs.indexOf(song);  
         };
         
-        
+
         /** PUBLIC ATTRIBUTES **/
         
         /**
@@ -96,6 +102,20 @@
 		* @type {Number}
 		*/
 		SongPlayer.volume = 80;
+		
+		
+		/**
+		* @desc Shuffle order of song playback
+		* @type {Boolean}
+		*/
+		SongPlayer.shuffle = null;
+		
+		/**
+		* @desc Loop through all songs continuously
+		* @type {Boolean}
+		*/
+		SongPlayer.loop = null;
+
         
         /** PUBLIC FUNCTIONS **/
         
@@ -105,7 +125,12 @@
         * @param {Object} song
         */
         SongPlayer.play = function(song) {
-            song = song || SongPlayer.currentSong;
+			if (song == null) {
+				song = currentAlbum.songs[0];
+			} else {
+				song = song || SongPlayer.currentSong;	
+			}
+			
             if (SongPlayer.currentSong !== song) {
                 setSong(song);
                 playSong(song);
@@ -136,7 +161,12 @@
             currentSongIndex--;
             
             if (currentSongIndex < 0) {
-                stopSong();
+				if (SongPlayer.loop) {
+					var song = currentAlbum.songs[currentAlbum.songs.length - 1];
+					SongPlayer.play(song);
+				} else {
+					stopSong();	
+				}
             } else {
                 var song = currentAlbum.songs[currentSongIndex];
                 SongPlayer.play(song);
@@ -148,11 +178,29 @@
         * @desc Changes song to next song in songs array in currentAlbum
         */
         SongPlayer.next = function() {
-            var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-            currentSongIndex++;
+			var currentSongIndex = getSongIndex(SongPlayer.currentSong);
+			
+			if (SongPlayer.shuffle) {
+				if (randomAlbumOrder.length === currentAlbum.songs.length - 1) {
+					randomAlbumOrder = [];	
+				}
+				
+				randomAlbumOrder.push(currentSongIndex);
+				
+				while (randomAlbumOrder.indexOf(currentSongIndex) !== -1) {
+					currentSongIndex = Math.floor(Math.random() * currentAlbum.songs.length);
+				}
+			} else {
+				currentSongIndex++;		
+			}
             
             if (currentSongIndex === currentAlbum.songs.length) {
-                stopSong();
+				if (SongPlayer.loop) {
+					var song = currentAlbum.songs[0];
+					SongPlayer.play(song);
+				} else {
+					stopSong();
+				}
             } else {
                 var song = currentAlbum.songs[currentSongIndex];
                 SongPlayer.play(song);
@@ -178,10 +226,11 @@
 		SongPlayer.setVolume = function(value) {
 			if (currentBuzzObject) {
 				currentBuzzObject.setVolume(value);
-				SongPlayer.volume = value;
 			}
+			
+			SongPlayer.volume = value;
 		};
-		
+
         return SongPlayer;
     }
     

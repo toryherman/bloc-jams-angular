@@ -12,18 +12,27 @@
                 <span class="ion-skip-forward"></span>
             </a>
         </div>
-        <div class="control-group currently-playing">
+		<div class="control-group currently-playing">
             <h2 class="song-name" ng-show="playerBar.songPlayer.currentSong">{{ playerBar.songPlayer.currentSong.title }}</h2>
             <div class="seek-control">
-                <seek-bar value="{{ playerBar.songPlayer.currentTime }}" max="{{ playerBar.songPlayer.currentSong.duration }}" on-change="playerBar.songPlayer.setCurrentTime(value)"></seek-bar>
+				<seek-bar value="{{ playerBar.songPlayer.currentTime }}" max="{{ playerBar.songPlayer.currentSong.duration }}" on-change="playerBar.songPlayer.setCurrentTime(value)"></seek-bar>
                 <div class="current-time">{{ playerBar.songPlayer.currentTime | timecode }}</div>
                 <div class="total-time">{{ playerBar.songPlayer.currentSong.duration | timecode }}</div>
+				<span 
+					ng-class="{'ion-shuffle': !playerBar.songPlayer.shuffle, 'ion-shuffle active': playerBar.songPlayer.shuffle}"
+					ng-click="playerBar.songPlayer.shuffle = !playerBar.songPlayer.shuffle">
+				</span>
+				<span 
+					ng-class="{'ion-loop': !playerBar.songPlayer.loop, 'ion-loop active': playerBar.songPlayer.loop}"
+					ng-click="playerBar.songPlayer.loop = !playerBar.songPlayer.loop">
+				</span>
             </div>
             <h2 class="artist-song-mobile" ng-show="playerBar.songPlayer.currentSong">{{ playerBar.albumData.artist }} - {{ playerBar.songPlayer.currentSong.title }}</h2>
             <h3 class="artist-name" ng-show="playerBar.songPlayer.currentSong">{{ playerBar.albumData.artist }}</h3>
         </div>
         <div class="control-group volume">
-            <span class="ion-volume-high icon"></span>
+            <span class="ion-volume-high icon" ng-show="playerBar.songPlayer.volume" ng-click="playerBar.songPlayer.setVolume(0)"></span>
+			<span class="ion-volume-mute icon" ng-show="!playerBar.songPlayer.volume" ng-click="playerBar.songPlayer.setVolume(80)"></span>
             <seek-bar value="{{ playerBar.songPlayer.volume }}" max="100" on-change="playerBar.songPlayer.setVolume(value)"></seek-bar>
         </div>
     </div>
