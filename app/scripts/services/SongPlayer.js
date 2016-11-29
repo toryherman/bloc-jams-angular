@@ -10,8 +10,8 @@
         * @type {Object}
         */
         var currentAlbum = Fixtures.getAlbum();
-		
-		var randomAlbumOrder = [];
+        
+        var randomAlbumOrder = [];
         
         /**
         * @desc Buzz object audio file
@@ -103,6 +103,11 @@
 		*/
 		SongPlayer.volume = 80;
 		
+		/**
+		* @desc Previous volume
+		* @type {Number}
+		*/
+		SongPlayer.lastVolume = null;		
 		
 		/**
 		* @desc Shuffle order of song playback
@@ -125,11 +130,15 @@
         * @param {Object} song
         */
         SongPlayer.play = function(song) {
-			if (song == null) {
-				song = currentAlbum.songs[0];
-			} else {
-				song = song || SongPlayer.currentSong;	
-			}
+            if (!song && !SongPlayer.currentSong) {
+                if (SongPlayer.shuffle) {
+                    song = currentAlbum.songs[Math.floor(Math.random() * currentAlbum.songs.length)];
+                } else {
+                    song = currentAlbum.songs[0];
+                }
+            } else {
+                song = song || SongPlayer.currentSong;	
+            }
 			
             if (SongPlayer.currentSong !== song) {
                 setSong(song);
@@ -192,7 +201,7 @@
 				}
 			} else {
 				currentSongIndex++;		
-			}
+            }
             
             if (currentSongIndex === currentAlbum.songs.length) {
 				if (SongPlayer.loop) {
@@ -229,6 +238,15 @@
 			}
 			
 			SongPlayer.volume = value;
+		};
+		
+		/**
+		* @function muteVolume
+		* @desc Store previous volume and set volume to 0
+		*/
+		SongPlayer.muteVolume = function() {
+			SongPlayer.lastVolume = SongPlayer.volume;
+			SongPlayer.setVolume(0);
 		};
 
         return SongPlayer;
