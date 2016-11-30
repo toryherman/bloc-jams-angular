@@ -20,7 +20,7 @@
                 <div class="total-time">{{ playerBar.songPlayer.currentSong.duration | timecode }}</div>
 				<span 
 					ng-class="{'ion-shuffle': !playerBar.songPlayer.shuffle, 'ion-shuffle active': playerBar.songPlayer.shuffle}"
-					ng-click="playerBar.songPlayer.shuffle = !playerBar.songPlayer.shuffle">
+					ng-click="playerBar.songPlayer.setShuffle()">
 				</span>
 				<span 
 					ng-class="{'ion-loop': !playerBar.songPlayer.loop, 'ion-loop active': playerBar.songPlayer.loop}"
