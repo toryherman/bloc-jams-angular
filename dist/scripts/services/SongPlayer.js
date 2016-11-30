@@ -156,6 +156,13 @@
                     playSong(song);
                 } 
             }
+            
+            ga('send', {
+                hitType: 'event', 
+                eventCategory: 'Song', 
+                eventAction: 'play', 
+                eventLabel: song.title
+            });
         };
         
         /**
