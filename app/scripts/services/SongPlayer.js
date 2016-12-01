@@ -28,7 +28,7 @@
         
         /**
         * @function setSong
-        * @desc Stops currently playing song and loads new audio file as currentBuzzObject
+        * @desc Stops currently playing song and loads new audio file as currentBuzzObject; sends GA info if song plays full duration
         * @param {Object} song
         */
         var setSong = function(song) {
@@ -43,11 +43,20 @@
             
 			currentBuzzObject.bind('timeupdate', function() {
 				$rootScope.$apply(function() {
-					SongPlayer.currentTime = currentBuzzObject.getTime();
-					
-					if (SongPlayer.currentTime === SongPlayer.currentSong.duration) {
-						SongPlayer.next();
-					}
+					if (currentBuzzObject) {
+                        SongPlayer.currentTime = currentBuzzObject.getTime();
+
+                        if (SongPlayer.currentTime === SongPlayer.currentSong.duration) {
+                            /*ga('send', {
+                                hitType: 'event', 
+                                eventCategory: 'Song', 
+                                eventAction: 'play', 
+                                eventLabel: song.title
+                            });*/
+
+                            SongPlayer.next();
+                        }
+                    }
 				});
 			});
             
@@ -74,7 +83,10 @@
         var stopSong = function(song) {
 			song = song || SongPlayer.currentSong;
 			currentBuzzObject.stop();
+            currentBuzzObject = null;
 			song.playing = null;
+            SongPlayer.currentSong = null;
+            SongPlayer.currentTime = null;
         };
         
         /**
