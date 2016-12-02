@@ -47,12 +47,12 @@
                         SongPlayer.currentTime = currentBuzzObject.getTime();
 
                         if (SongPlayer.currentTime === SongPlayer.currentSong.duration) {
-                            /*ga('send', {
+                            ga('send', {
                                 hitType: 'event', 
                                 eventCategory: 'Song', 
                                 eventAction: 'play', 
                                 eventLabel: song.title
-                            });*/
+                            });
 
                             SongPlayer.next();
                         }
@@ -168,13 +168,6 @@
                     playSong(song);
                 } 
             }
-            
-            ga('send', {
-                hitType: 'event', 
-                eventCategory: 'Song', 
-                eventAction: 'play', 
-                eventLabel: song.title
-            });
         };
         
         /**
