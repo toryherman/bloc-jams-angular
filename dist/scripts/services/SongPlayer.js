@@ -187,27 +187,36 @@
         */
         SongPlayer.previous = function() {
             var currentSongIndex = getSongIndex(SongPlayer.currentSong);
-            currentSongIndex--;
+            
+            if (currentBuzzObject) {
+                SongPlayer.currentTime = currentBuzzObject.getTime();
+            
+                if (SongPlayer.currentTime < 5) {
+                    currentSongIndex--;
+                } else {
+                    stopSong();
+                }   
+            }
             
             if (currentSongIndex < 0) {
-				if (SongPlayer.loop) {
+                if (SongPlayer.loop || SongPlayer.currentSong === null) {
                     if (SongPlayer.shuffle) {
                         var song = randomAlbum[randomAlbum.length - 1];
                     } else {
                         var song = currentAlbum.songs[currentAlbum.songs.length - 1];    
                     }
-					
-					SongPlayer.play(song);
-				} else {
-					stopSong();
-				}
+
+                    SongPlayer.play(song);
+                } else {
+                    stopSong();
+                }
             } else {
                 if (SongPlayer.shuffle) {
                     var song = randomAlbum[currentSongIndex];
                 } else {
                     var song = currentAlbum.songs[currentSongIndex];
                 }
-                
+
                 SongPlayer.play(song);
             }
         };    
